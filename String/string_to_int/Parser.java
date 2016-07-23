@@ -13,8 +13,8 @@ public class Parser {
     private Hashtable<String,Integer> mapBase;
     
     public static void main(String[] args) {
-        //System.out.println((int) 'a' + " " + (int)'Z');
-        String s = "One billion SeveN hundred and Thirty two million three hundred and sixty eight thousand eight hundred and twenty six";
+        //String s = "One billion SeveN hundred and Thirty two million three hundred and sixty eight thousand eight hundred and twenty six";
+        String s = args[0];
         System.out.println("s = " + s);
         System.out.println(parseStringToWord(s));
         Parser mParser = new Parser();
@@ -74,7 +74,7 @@ public class Parser {
             }
         }
         String last = sb.toString();
-        if (last.length() > 0) result.add(last);
+        if (last.length() > 0) result.add(last.toLowerCase());
         return result;
     }
 }
