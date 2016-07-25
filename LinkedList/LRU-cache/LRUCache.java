@@ -5,6 +5,16 @@ public class LRUCache {
     private Hashtable<Integer, Node> map;
     private int capacity;
 
+    public static void main(String[] args) {
+        LRUCache lc = new LRUCache(4);
+        lc.insert(1, "google.com");
+        lc.insert(2, "facebook.com");
+        lc.insert(3, "amazon.com");
+        lc.insert(4, "microsoft.com");
+        lc.insert(5, "24h.com.vn");
+        System.out.println("Get record = " + lc.get(3).value);
+    }
+
     public LRUCache(int maxSize) {
         capacity = maxSize;
         data = new LinkedList();
@@ -12,19 +22,24 @@ public class LRUCache {
     }
 
     public void insert(int key, String s) {
-        Node p = new Node(s);
-        if (data.size >= capacity) { 
-            // TODO: remove from map!
-            remove(data.last);
+        Node p = new Node(key, s);
+        if (data.size >= capacity) {
+            map.remove(data.last.key);
+            data.remove(data.last);
         }
+        map.put(key, p);
+        data.addToHead(p);
+        data.print();
     }
 
-    public void access(int key) {
+    public Node get(int key) {
         Node p = map.get(key);
         if (p == null) { // not in cache
-            return;
+            return null;
         }
         data.pushToFront(p);
+        data.print();
+        return p;
     }
 
     private class LinkedList {
@@ -37,20 +52,12 @@ public class LRUCache {
             size = 0;
         }
 
-        private void add(String value) {
+        private void addToHead(Node p) {
             size++;
-            Node p = new Node(value);
-            if (head == null) { //list is empty
+            if (head == null) {
                 head = last = p;
                 return;
             }
-            last.next = p;
-            p.previous = last;
-            last = p;
-        }
-
-        private void addToHead(Node p) {
-            size++;
             p.next = head;
             head.previous = p;
             head = p;
@@ -81,15 +88,28 @@ public class LRUCache {
             remove(p);
             addToHead(p);
         }
+        
+        private void print() {
+            Node p = head;
+            System.out.println("Cache list: ");
+            while (p != null) {
+                System.out.println("key = " + p.key + " value = " + p.value);
+                p = p.next;
+            }
+            System.out.println();
+        }
+
     }
     private class Node {
         private Node next;
         private Node previous;
         private String value;
+        private int key;
 
-        private Node(String value) {
+        private Node(int key, String value) {
             previous = next = null;
             this.value = value;
+            this.key = key;
         }
     }
 }
