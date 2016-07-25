@@ -12,7 +12,11 @@ public class LRUCache {
         lc.insert(3, "amazon.com");
         lc.insert(4, "microsoft.com");
         lc.insert(5, "24h.com.vn");
-        System.out.println("Get record = " + lc.get(3).value);
+        System.out.println("Get record with key 3 = " + lc.get(3).value);
+        lc.data.print();
+        System.out.println("Get record with key 4 = " + lc.get(4).value);
+        lc.data.print();
+        lc.insert(7, "google.com");
     }
 
     public LRUCache(int maxSize) {
@@ -38,7 +42,6 @@ public class LRUCache {
             return null;
         }
         data.pushToFront(p);
-        data.print();
         return p;
     }
 
