@@ -1,5 +1,6 @@
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class BST {
     private Node root;
@@ -13,8 +14,16 @@ public class BST {
         bst.insert(3,"apple");
         bst.insert(5,"hello");
         bst.printTree();
+        System.out.println();
         System.out.println("Get 3 = " + bst.get(3).data);
         System.out.println("Get 5 = " + bst.get(5).data);
+        System.out.println();
+        System.out.print("Inorder seq: ");
+        ArrayList<Integer> inorder = bst.inOrder();
+        for (int i = 0; i < inorder.size(); i++) {
+            System.out.print(inorder.get(i) + " ");
+        }
+        System.out.println();
     }
 
     public BST() {
@@ -82,7 +91,20 @@ public class BST {
         }
         return null;
     }
-    
+   
+    public ArrayList<Integer> inOrder() {
+        ArrayList<Integer> seq = new ArrayList<Integer>();
+        getInOrder(root,seq);
+        return seq;
+    }
+
+    private void getInOrder(Node p, ArrayList<Integer> seq) {
+        if (p == null) return;
+        getInOrder(p.left, seq);
+        seq.add(p.key);
+        getInOrder(p.right, seq);
+    }
+
     private class Node {
         private int key;
         private String data;
