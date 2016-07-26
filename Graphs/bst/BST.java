@@ -24,6 +24,15 @@ public class BST {
             System.out.print(inorder.get(i) + " ");
         }
         System.out.println();
+        bst = new BST();
+        bst.insert(1, "the root");
+        bst.insert(5, "right of root");
+        bst.insert(3, "left of right of root");
+        
+        System.out.println("\nNew tree is: ");
+        bst.printTree();
+        Node sndSmallest = bst.get2ndSmallest();
+        System.out.println("2nd smallest node is: " + sndSmallest.key + " - " + sndSmallest.data);
     }
 
     public BST() {
@@ -52,6 +61,28 @@ public class BST {
                 nextLv = 0;
             }
         }
+    }
+
+    public Node get2ndSmallest() {
+        if (root == null) return null;
+        if (root.left == null) {
+            if (root.right == null) return null;
+            return getMin(root.right);
+        }
+        Node result = root;
+        Node current = root;
+        while (current.left != null) {
+            result = current;
+            current = current.left;
+        }
+        return result;
+    }
+
+    public Node getMin(Node root) {
+        Node current = root;
+        while (current.left != null) 
+            current = current.left;
+        return current;
     }
 
     public void insert(int key, String s) {
