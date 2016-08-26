@@ -15,11 +15,9 @@ public class TaskC{
     int n = input.nextInt();
     int m = input.nextInt();
     Node[] nodes = new Node[n];
-    Node[] treeNodes = new Node[n];
     for (int i = 0; i < n; i++) {
       int hasCat = input.nextInt();
       nodes[i] = new Node(hasCat == 1);
-      treeNodes[i] = new Node(hasCat == 1);
     }
 
     for (int i = 0; i < n - 1; i++) {
@@ -29,20 +27,20 @@ public class TaskC{
       nodes[v].adj.add(u);
     }
 
-    buildTree(nodes, 0, treeNodes);
-    int result = dfs(treeNodes, 0, 0, m);
+    buildTree(nodes, 0);
+    int result = dfs(nodes, 0, 0, m);
     output.println(result);
   }
 
-  private void buildTree(Node[] nodes, int idx, Node[] result) {
+  private void buildTree(Node[] nodes, int idx) {
     if (nodes.length == 0) {
       return;
     }
     nodes[idx].visited = true;
     for (Integer node : nodes[idx].adj) {
-      if (nodes[node].visited == false) {
-        result[idx].adj.add(node);
-        buildTree(nodes, node, result);
+      if (!nodes[node].visited) {
+        nodes[idx].treeAdj.add(node);
+        buildTree(nodes, node);
       }
     }
   }
@@ -61,21 +59,20 @@ public class TaskC{
       return 0;
     }
     
-    if (nodes[idx].adj.size() == 0) { // leaf
+    if (nodes[idx].treeAdj.size() == 0) { // leaf
       return 1;
     } 
     // not leaf
     int result = 0;
-    for (Integer node : nodes[idx].adj) {
-      if (!nodes[node].visited) {
-        result += dfs(nodes, node, count, limit);
-      }
+    for (Integer node : nodes[idx].treeAdj) {
+      result += dfs(nodes, node, count, limit);
     }
     return result;
   }
 
   private class Node {
     private List<Integer> adj;
+    private List<Integer> treeAdj;
     private boolean hasCat;
     private boolean visited;
 
@@ -83,6 +80,7 @@ public class TaskC{
       hasCat = cat;
       visited = false;
       adj = new ArrayList<Integer>();
+      treeAdj = new ArrayList<Integer>();
     }
   }
 }
