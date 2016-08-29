@@ -32,7 +32,7 @@ public class SuffixArray {
       Arrays.sort(l);
       for (int i = 0; i < len; i++) {
         p[l[i].idx][step] = (i > 0 && l[i].first == l[i - 1].first && l[i].second == l[i - 1].second) ?
-          p[i - 1][step] : i;
+          p[l[i - 1].idx][step] : i;
       }
     }
 
