@@ -13,7 +13,7 @@ struct Entry {
 } l[100111];
 int n;
 
-bool cmp(struct Entry a, struct Entry b) {
+bool cmp(const Entry& a, const Entry& b) {
   if (a.first == b.first) {
     return a.second < b.second;
   }
