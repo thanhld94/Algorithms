@@ -5,8 +5,8 @@ import java.util.Arrays;
 public class StringPermutation {
 
 
-	public List permutations(char[] s) {
-		List result = new ArrayList <Character[]>();
+	public List<Character[]> permutations(char[] s) {
+		List<Character[]> result = new ArrayList<Character[]>();
 		Character[] perm = new Character[s.length];
 		boolean[] used = new boolean[s.length];
 		Arrays.sort(s);
@@ -14,7 +14,7 @@ public class StringPermutation {
 		return result;
 	}
 
-	private void generate(char[] s, int idx, Character[] perm, boolean[] used, List result) {
+	private void generate(char[] s, int idx, Character[] perm, boolean[] used, List<Character[]> result) {
 		if (idx >= s.length) {
 			result.add(perm.clone());
 			return;
