@@ -26,24 +26,16 @@ public class subset {
       return;
     }
 
-    int[][] dp = getDpFunction(n, total/2);
-    long result = 0L;
-    for (int i = 1; i <= n; i++) {
-      result += dp[total / 2][i];
-    }
-    output.println(result / 2);
+    long[] dp = getDpFunction(n, total/2);
+    output.println(dp[total/2]/ 2);
   }
 
-  private int[][] getDpFunction(int n, int value) {
-    int[][] f = new int[value + 1][n + 1];
-    f[0][0] = 1;
-    for (int sum = 1; sum <= value; sum++) {
-      for (int key = 1; key <= n; key++) {
-        if (key <= sum) {
-          for (int subkey = 0; subkey < key; subkey++) {
-            f[sum][key] += f[sum - key][subkey];
-          }
-        }
+  private long[] getDpFunction(int n, int value) {
+    long[] f = new long[value + 1];
+    f[0] = 1L;
+    for (int key = 1; key <= n; key++) {
+      for (int sum = value; sum >= key; sum--) {
+        f[sum] += f[sum - key];
       }
     }
     return f;
