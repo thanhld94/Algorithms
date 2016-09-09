@@ -18,8 +18,8 @@ public class TemplateMaker {
     PrintWriter output = new PrintWriter(outputfile);
     //start class
     output.println("import java.io.PrintWriter;");
-    output.println("import java.util.Scanner;\n");
-    output.println("public class Task" + task + "{");
+    output.println("import java.util.*;\n");
+    output.println("public class Task" + task + " {");
     
     //main method
     output.println("  public static void main(String[] args) {");
