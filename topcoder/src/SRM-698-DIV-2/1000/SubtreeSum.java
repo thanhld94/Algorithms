@@ -1,14 +1,14 @@
 import java.util.*;
 
 public class SubtreeSum {
-  private static final long MODULE = (long)1e9+7; 
+  
+  private static final long MODULE = (long) 1e9+7;
 
   public int getSum(int[] p, int[] x) {
-    int n = p.length + 1;
-    Node[] nodes = new Node[n];
+    Node[] nodes = new Node[p.length + 1];
+    int n = nodes.length;
     for (int i = 0; i < n; i++) {
-      nodes[i] = new Node();
-      nodes[i].weight = x[i];
+      nodes[i] = new Node(x[i]);
     }
 
     for (int i = 0; i < p.length; i++) {
@@ -16,74 +16,76 @@ public class SubtreeSum {
       nodes[i + 1].adj.add(p[i]);
     }
 
-    long[] ntotal = new long[n];
-    Arrays.fill(ntotal, -1);
+    long[] totalTree = new long[n];
+    Arrays.fill(totalTree, -1);
 
     long result = 0L;
-    for (int i = 0; i < 32; i++) {
-      long[] count = new long[n];
-      Arrays.fill(count, -1);
+    for (int bit = 0; bit < 32; bit++) {
+      long[] badTree = new long[n];
+      Arrays.fill(badTree, -1);
       for (int idx = 0; idx < n; idx++) {
-        result = (result + ((1 << i) * (countTotal(nodes, idx, ntotal) + MODULE - countZeroAt(i, nodes, idx, count)% MODULE)) % MODULE) % MODULE; 
+        long count = (countTotal(idx, nodes, totalTree) + MODULE - countBad(bit, idx, nodes, badTree)) % MODULE;
+        result = (result + ((count * (1 << bit)) % MODULE)) % MODULE;
       }
     }
-    return (int)result;
+    return (int) result;
   }
 
-  private long countTotal(Node[] nodes, int idx, long[] ntotal) {
-    if (ntotal[idx] != -1) {
-      return ntotal[idx];
+  private long countTotal(int idx, Node[] nodes, long[] totalTree) {
+    if (totalTree[idx] != -1) {
+      return totalTree[idx];
     }
-    if (nodes[idx].parent != -1 && nodes[idx].adj.size() == 1) {
-      ntotal[idx] = 1L;
-      return 1L;
+
+    if (nodes[idx].parent != -1 && nodes[idx].adj.size() == 1) { // leaf
+      totalTree[idx] = 1L;
+      return totalTree[idx];
     }
 
     long result = 1L;
     for (int next : nodes[idx].adj) {
       if (next != nodes[idx].parent) {
         nodes[next].parent = idx;
-        result = (result * (countTotal(nodes, next, ntotal) + 1)) % MODULE;
+        result = (result * (countTotal(next, nodes, totalTree) + 1)) % MODULE;
       }
     }
-    ntotal[idx] = result;
-    return ntotal[idx];
+    totalTree[idx] = result;
+    return totalTree[idx];
   }
 
-  private long countZeroAt(int bit, Node[] nodes, int idx, long[] count) {
-    if (count[idx] != -1) {
-      return count[idx];
+  private long countBad(int bit, int idx, Node[] nodes, long[] badTree) {
+    if (badTree[idx] != -1) {
+      return badTree[idx];
     }
 
-    if ((nodes[idx].weight & (1 << bit)) != 0) {
-      count[idx] = 0L;
-      return 0L;
+    if ((nodes[idx].weight & (1 << bit)) != 0) { // good subtree
+      badTree[idx] = 0L;
+      return badTree[idx];
     }
-
-    if (nodes[idx].parent != -1 && nodes[idx].adj.size() == 1) {
-      count[idx] = 1L;
-      return count[idx];
+    
+    if (nodes[idx].parent != -1 && nodes[idx].adj.size() == 1) { // leaf
+      badTree[idx] = 1L;
+      return badTree[idx];
     }
 
     long result = 1L;
     for (int next : nodes[idx].adj) {
       if (next != nodes[idx].parent) {
-        result = (result * (countZeroAt(bit, nodes, next, count) + 1)) % MODULE;
-      } 
+        result = (result * (countBad(bit, next, nodes, badTree) + 1)) % MODULE;
+      }
     }
-
-    count[idx] = result;
-    return count[idx];
+    badTree[idx] = result;
+    return result;
   }
-  
-  private class Node {
-    private int parent;
+
+  private class Node { 
     private int weight;
+    private int parent;
     private Set<Integer> adj;
 
-    private Node() {
+    private Node(int weight) {
+      this.weight = weight;
+      this.parent = -1;
       adj = new HashSet<Integer>();
-      parent = -1;
     }
   }
 }
