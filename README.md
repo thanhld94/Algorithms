@@ -1,10 +1,17 @@
-# Summer16
-Coding Preparation During Summer 2016
+# Algorithms
+- Algorithms and Datat Structures implementations
+- Programing Paradigms
+- Graph theories
+- Dynamic Programming
+- String Manipulation
+- Divide and Conquer
+- DS: Linked List, Trees
 
-# Preparation
-- Reimplemting basic algorithms and data structures
-- Doing practices over codeforce, topcoder, usaco, etc.
+# ACM ICPC Prep
+- Coding preparation for 2016 ICPC regional contest
 
-# Purposes
-- ACM-ICPC preparation
-- Google, Amazon, Microsoft, Facebook Interviews
+# Online Judges
+- Solving practice problems
+- Solving online contests
+- Cites: codeforce, topcoder, usaco, etc.
+
