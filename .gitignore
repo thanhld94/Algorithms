@@ -1,6 +1,5 @@
 *.class
 *.txt
 .DS_Store
-*/.DS_Store
 .--servername.swp
 
