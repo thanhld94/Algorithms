@@ -24,7 +24,6 @@ public class TaskD {
     for (int i = 0; i < m; i++) {
       exams[i] = input.nextInt(); 
     }
-    Arrays.sort(exams);
     solve(output);
   }
 
