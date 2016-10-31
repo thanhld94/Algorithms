@@ -16,37 +16,41 @@ public class TaskD {
     int idx2 = -1;
     Map<Pair, Pair> map = new HashMap<Pair, Pair>();
     for (int i = 0; i < n; i++) {
-      int[] point = new int[3];
+      int[] length = new int[3];
       for (int j = 0; j < 3; j++) {
-        point[j] = input.nextInt();
+        length[j] = input.nextInt();
       }
-      Arrays.sort(point);
+      Arrays.sort(length);
 
-      int min = point[0];
-      if (maxVal < min) {
-        maxVal = min;
+      if (maxVal < length[0]) {
+        maxVal = length[0];
         idx1 = i + 1;
         idx2 = -1;
       }
 
-      if (maxVal < get(map, point[0], point[1], point[2])) {
-        maxVal = get(map, point[0], point[1], point[2]);
-        idx1 = map.get(new Pair(point[1], point[2])).second + 1;
+      // combining side (y,z)
+      if (maxVal < get(map, length[0], length[1], length[2])) {
+        maxVal = get(map, length[0], length[1], length[2]);
+        idx1 = map.get(new Pair(length[1], length[2])).second + 1;
         idx2 = i + 1;
       }
-      if (maxVal < get(map, point[1], point[0], point[2])) {
-        maxVal = get(map, point[1], point[0], point[2]);
-        idx1 = map.get(new Pair(point[0], point[2])).second + 1;
+
+      // combining side (x, z)
+      if (maxVal < get(map, length[1], length[0], length[2])) {
+        maxVal = get(map, length[1], length[0], length[2]);
+        idx1 = map.get(new Pair(length[0], length[2])).second + 1;
         idx2 = i + 1;
       }
-      if (maxVal < get(map, point[2], point[0], point[1])) {
-        maxVal = get(map, point[2], point[0], point[1]);
-        idx1 = map.get(new Pair(point[0], point[2])).second + 1;
+
+      // combining side (x, y)
+      if (maxVal < get(map, length[2], length[0], length[1])) {
+        maxVal = get(map, length[2], length[0], length[1]);
+        idx1 = map.get(new Pair(length[0], length[1])).second + 1;
         idx2 = i + 1;
       }
-      update(map, point[0], point[1], point[2], i);
-      update(map, point[1], point[2], point[0], i);
-      update(map, point[0], point[2], point[1], i);
+      update(map, length[0], length[1], length[2], i);
+      update(map, length[0], length[2], length[1], i);
+      update(map, length[1], length[2], length[0], i);
     }
     if (idx2 == -1) {
       output.println(1);
@@ -69,7 +73,7 @@ public class TaskD {
   private void update(Map<Pair, Pair> map, int x, int y, int val, int idx) {
     Pair surface = new Pair(x, y);
     if (map.containsKey(surface)) {
-      if (map.get(surface).second < val) {
+      if (map.get(surface).first < val) {
         map.put(surface, new Pair(val, idx));
       }
       return;
