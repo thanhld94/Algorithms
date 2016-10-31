@@ -35,19 +35,6 @@ public class TaskD {
         idx2 = i + 1;
       }
 
-      // combining side (x, z)
-      if (maxVal < get(map, length[1], length[0], length[2])) {
-        maxVal = get(map, length[1], length[0], length[2]);
-        idx1 = map.get(new Pair(length[0], length[2])).second + 1;
-        idx2 = i + 1;
-      }
-
-      // combining side (x, y)
-      if (maxVal < get(map, length[2], length[0], length[1])) {
-        maxVal = get(map, length[2], length[0], length[1]);
-        idx1 = map.get(new Pair(length[0], length[1])).second + 1;
-        idx2 = i + 1;
-      }
       update(map, length[0], length[1], length[2], i);
       update(map, length[0], length[2], length[1], i);
       update(map, length[1], length[2], length[0], i);
