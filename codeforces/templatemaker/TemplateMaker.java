@@ -8,9 +8,10 @@ import java.io.FileNotFoundException;
 public class TemplateMaker {
   public static void main(String[] args) throws IOException, FileNotFoundException {
     // import
-    String problemName = args[0];
-    String task = args[1].toUpperCase();
-    File outputfile = new File(task + "_" + problemName + "/Task" + task + ".java");
+    String contest = args[0];
+    String problemName = args[1];
+    String task = args[2].toUpperCase();
+    File outputfile = new File(contest + "/" + task + "_" + problemName + "/Task" + task + ".java");
     outputfile.getParentFile().mkdirs();
     outputfile.createNewFile();
     
