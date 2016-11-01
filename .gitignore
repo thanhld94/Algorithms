@@ -1,6 +1,12 @@
+# java generated files
 *.class
+
+# junk files
 *.txt
+
+# OS generated files
 .DS_Store
+
+# vim generated files
 *.swp
-.--servername.swp
 
