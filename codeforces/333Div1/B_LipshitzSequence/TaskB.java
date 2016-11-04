@@ -51,7 +51,6 @@ public class TaskB {
 
   // lengthLeft[i] the max length of the sequence (j,i) where j <= i such that a[i] >= a[j]
   private void countLeft(int low, int high) {
-    Arrays.fill(lengthLeft, 0);
     int top = -1;
     for (int i = low; i < high; i++) {
       lengthLeft[i] = 1;
@@ -65,7 +64,6 @@ public class TaskB {
 
   // lengthRight[i] same as lengthLeft, but to the right but a[i] > a[j] if j != i
   private void countRight(int low, int high) {
-    Arrays.fill(lengthRight, 0);
     int top = -1;
     for (int i = high - 1; i >= low; i--) {
       lengthRight[i] = 1;
