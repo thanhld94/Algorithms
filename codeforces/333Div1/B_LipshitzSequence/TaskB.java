@@ -76,14 +76,4 @@ public class TaskB {
       stack[++top] = i;
     }
   }
-
-  private class Cell {
-    private int idx;
-    private int value;
-
-    private Cell(int idx, int value) {
-      this.idx = idx;
-      this.value = value;
-    }
-  }
 }
