@@ -2,46 +2,47 @@ import java.io.*;
 import java.util.*;
 
 public class TaskB {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     TaskB tB = new TaskB();
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    PrintWriter output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+    Scanner input = new Scanner(System.in);
+    PrintWriter output = new PrintWriter(System.out);
     tB.solve(input, output);
     output.close();
   }
 
-  public void solve(BufferedReader input, PrintWriter output) throws IOException {
-    StringTokenizer st = new StringTokenizer(input.readLine());
-    int n = Integer.parseInt(st.nextToken());
-    int q = Integer.parseInt(st.nextToken());
+  private int n, q;
+  private int[] a;
+  private int[] diff;
+  private int[] stack;
+  private int[] lengthLeft;
+  private int[] lengthRight;
 
-    int[] a = new int[n];
-    st = new StringTokenizer(input.readLine());
+  public void solve(Scanner input, PrintWriter output) {
+    n = input.nextInt();
+    q = input.nextInt();
+
+    a = new int[n];
     for(int i = 0; i < n; i++) {
-      a[i] = Integer.parseInt(st.nextToken());
+      a[i] = input.nextInt();
     }
 
-    // absolute difference between a[i] and a[i + 1]
-    // if i < j < k then L(i,j) or L(j,k) >= L(i,k)
-    int[] diff = new int[n - 1];
+    diff = new int[n - 1];
     for (int i = 0; i < n - 1; i++) {
       diff[i] = Math.abs(a[i] - a[i + 1]);
     }
 
-    
+    stack = new int[n];
+    lengthLeft = new int[n - 1];
+    lengthRight = new int[n - 1];
+    // if i < j < k then L(i,j) or L(j,k) >= L(i,k)
     for (int query = 0; query < q; query++) {
-      st = new StringTokenizer(input.readLine());
-      int low = Integer.parseInt(st.nextToken()) - 1;
-      int high = Integer.parseInt(st.nextToken()) - 2;
-      int[] lengthLeft = countLeft(diff, low, high); 
-      int[] lengthRight = countRight(diff, low, high); 
+      int low = input.nextInt() - 1;
+      int high = input.nextInt() - 1;
 
-      if (low > high) {
-        output.println(0);
-        continue;
-      }
+      countLeft(low, high);
+      countRight(low, high);
       long result = 0L;
-      for (int idx = low; idx <= high; idx++) {
+      for (int idx = low; idx < high; idx++) {
         result += (1L) * diff[idx] * lengthLeft[idx] * lengthRight[idx];
       }
       output.println(result);
@@ -49,37 +50,31 @@ public class TaskB {
   }
 
   // lengthLeft[i] the max length of the sequence (j,i) where j <= i such that a[i] >= a[j]
-  private int[] countLeft(int[] arr, int left, int right) {
-    int[] count = new int[arr.length];
-    Stack<Cell> stack = new Stack<Cell>();
-    for (int idx = left; idx <= right; idx++) {
-      count[idx] = 1;
-      if (!stack.empty()) {
-        while (!stack.empty() && stack.peek().value <= arr[idx]) {
-          Cell top = stack.pop();
-          count[idx] += count[top.idx];
-        }
+  private void countLeft(int low, int high) {
+    Arrays.fill(lengthLeft, 0);
+    int top = -1;
+    for (int i = low; i < high; i++) {
+      lengthLeft[i] = 1;
+      if (top >= 0) { // not empty
+        while (top >= 0 && diff[stack[top]] <= diff[i])
+          lengthLeft[i] += lengthLeft[stack[top--]];
       }
-      stack.push(new Cell(idx, arr[idx]));
+      stack[++top] = i;
     }
-    return count;
   }
 
   // lengthRight[i] same as lengthLeft, but to the right but a[i] > a[j] if j != i
-  private int[] countRight(int[] arr, int left, int right) {
-    int[] count = new int[arr.length];
-    Stack<Cell> stack = new Stack<Cell>();
-    for (int idx = right; idx >= left; idx--) {
-      count[idx] = 1;
-      if (!stack.empty()) {
-        while (!stack.empty() && stack.peek().value < arr[idx]) {
-          Cell top = stack.pop();
-          count[idx] += count[top.idx];
-        }
+  private void countRight(int low, int high) {
+    Arrays.fill(lengthRight, 0);
+    int top = -1;
+    for (int i = high - 1; i >= low; i--) {
+      lengthRight[i] = 1;
+      if (top >= 0) { // not empty
+        while (top >= 0 && diff[stack[top]] < diff[i]) 
+          lengthRight[i] += lengthRight[stack[top--]];
       }
-      stack.push(new Cell(idx, arr[idx]));
+      stack[++top] = i;
     }
-    return count;
   }
 
   private class Cell {
