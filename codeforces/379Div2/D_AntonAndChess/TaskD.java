@@ -68,7 +68,7 @@ public class TaskD {
           colTop = distance;
         }
       }
-      if (row == kingRow && row > kingRow) { // same col, below
+      if (col == kingCol && row > kingRow) { // same col, below
         if (distance < colBot) {
           pieceBot = piece;
           colBot = distance;
