@@ -18,20 +18,21 @@ public class TemplateMaker {
 
     PrintWriter output = new PrintWriter(outputfile);
     //start class
-    output.println("import java.io.PrintWriter;");
+    output.println("import java.io.*;");
     output.println("import java.util.*;\n");
     output.println("public class Task" + task + " {");
     
     //main method
     output.println("  public static void main(String[] args) {");
     output.println("    Task" + task + " t" + task + " = new Task" + task + "();");
-    output.println("    PrintWriter pw = new PrintWriter(System.out);");
-    output.println("    t" + task + ".solve(new Scanner(System.in), pw);");
-    output.println("    pw.close();");
+    output.println("    PrintWriter out = new PrintWriter(System.out);");
+    output.println("    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));");
+    output.println("    t" + task + ".solve(in, out);");
+    output.println("    out.close();");
     output.println("  }\n");
     
     //solve method
-    output.println("  public void solve(Scanner input, PrintWriter output) {");
+    output.println("  public void solve(BufferedReader in, PrintWriter out) {");
     output.println("  }");
 
     //end class
