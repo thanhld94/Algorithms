@@ -23,7 +23,7 @@ public class TemplateMaker {
     output.println("public class Task" + task + " {");
     
     //main method
-    output.println("  public static void main(String[] args) {");
+    output.println("  public static void main(String[] args) throws IOException {");
     output.println("    Task" + task + " t" + task + " = new Task" + task + "();");
     output.println("    PrintWriter out = new PrintWriter(System.out);");
     output.println("    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));");
@@ -32,7 +32,7 @@ public class TemplateMaker {
     output.println("  }\n");
     
     //solve method
-    output.println("  public void solve(BufferedReader in, PrintWriter out) {");
+    output.println("  public void solve(BufferedReader in, PrintWriter out) throws IOException {");
     output.println("  }");
 
     //end class
