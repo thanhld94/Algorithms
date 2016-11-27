@@ -11,40 +11,41 @@ public class TaskD {
   }
 
   private static final int MAXN = 200111;
-  
+
   int n;
   int[] count = new int[MAXN];
   long[] distanceFromRoot = new long[MAXN];
   long[] distanceFromParent = new long[MAXN];
   long[] radius = new long[MAXN];
   List<List<Integer>> adj = new ArrayList<List<Integer>>();
-
-  // stack
   int[] stack = new int[MAXN];
   int slast = -1;
 
   public void solve(BScanner in, PrintWriter out) {
-    n = in.nextInt();
-    for (int i = 0; i < n; i++) {
-      adj.add(new ArrayList<Integer>());
-      radius[i] = in.nextLong();
-    }
-    for (int i = 1; i < n; i++) {
-      int p = in.nextInt() - 1;
-      long w = in.nextLong();
-      adj.get(p).add(i);
-      distanceFromParent[i] = w;
-    }
-
-    visit(0); //dfs
-    for (int i = 0; i < n; i++) {
-      int total = 0;
-      for (int child : adj.get(i)) {
-        total += count[child];
+    {
+      n = in.nextInt();
+      for (int i = 0; i < n; i++) {
+        adj.add(new ArrayList<Integer>());
+        radius[i] = in.nextLong();
       }
-      out.print(total + " ");
+      for (int i = 1; i < n; i++) {
+        int p = in.nextInt() - 1;
+        long w = in.nextLong();
+        adj.get(p).add(i);
+        distanceFromParent[i] = w;
+      }
     }
-    out.println();
+    {
+      visit(0);
+      for (int i = 0; i < n; i++) {
+        int total = 0;
+        for (int child : adj.get(i)) {
+          total += count[child];
+        }
+        out.print(total + " ");
+      }
+      out.println();
+    }
   }
 
   private void visit(int node) {
